@@ -1,6 +1,5 @@
 package com.example.musicplayer
 
-import android.Manifest
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.os.Build
@@ -8,16 +7,12 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.OvershootInterpolator
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,19 +20,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -47,16 +34,9 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.musicplayer.permissions.PermissionsViewModel
 import com.example.musicplayer.trialLogic.AudioFile
-import com.example.musicplayer.trialLogic.AudioViewModel
-import com.example.musicplayer.ui.screens.getStartedScreen.GetStartedScreen
+import com.example.musicplayer.ui.screens.getStartedScreen.ChooseThemeScreen
 import com.example.musicplayer.ui.theme.MusicPlayerTheme
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 val SHOW_WELCOME_SCREEN = booleanPreferencesKey("show_welcome_screen")
@@ -124,7 +104,7 @@ class MainActivity : ComponentActivity() {
             MusicPlayerTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Spacer(modifier = Modifier.padding(innerPadding))
-                    GetStartedScreen()
+                    ChooseThemeScreen()
                     /*
                     val viewModel = viewModel<PermissionsViewModel>()
                     val audioViewModel = viewModel<AudioViewModel>()

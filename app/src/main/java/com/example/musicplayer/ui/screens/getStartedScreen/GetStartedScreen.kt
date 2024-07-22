@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,7 +31,8 @@ import com.example.musicplayer.ui.theme.chopsicFontFamily
 
 @Composable
 fun GetStartedScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onGetStartedClicked: () -> Unit = {}
 ){
     Box(
         modifier = modifier.fillMaxSize()
@@ -54,6 +56,7 @@ fun GetStartedScreen(
                         append("From the ")
                     }
                     withStyle(style = SpanStyle(
+                        color = MaterialTheme.colorScheme.primary
                         //color = Color.Red
                     )) {
                         append("latest")
@@ -64,6 +67,7 @@ fun GetStartedScreen(
                         append(" to the ")
                     }
                     withStyle(style = SpanStyle(
+                        color = MaterialTheme.colorScheme.primary
                         //color = Color.Red
                     )) {
                         append("greatest")
@@ -75,6 +79,7 @@ fun GetStartedScreen(
                     }
                     withStyle(style = SpanStyle(
                         //color = Color.Red
+                        color = MaterialTheme.colorScheme.primary,
                         fontFamily = chopsicFontFamily
                     )) {
                         append("MUSIC PLAYER\n")
@@ -99,9 +104,7 @@ fun GetStartedScreen(
                     .fillMaxWidth()
                     .padding(start = 32.dp, end = 32.dp, bottom = 51.dp)
                     .height(92.dp),
-                onClick = {
-
-                }
+                onClick = onGetStartedClicked
             ) {
                 Text(
                     text = "Get Started",
