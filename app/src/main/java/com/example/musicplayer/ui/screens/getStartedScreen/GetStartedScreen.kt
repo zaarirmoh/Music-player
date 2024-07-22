@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -102,9 +103,10 @@ fun GetStartedScreen(
             Button(
                 modifier = modifier
                     .fillMaxWidth()
-                    .padding(start = 32.dp, end = 32.dp, bottom = 51.dp)
+                    .padding(start = 32.dp, end = 32.dp, bottom = 100.dp)
                     .height(92.dp),
-                onClick = onGetStartedClicked
+                onClick = onGetStartedClicked,
+                shape = RoundedCornerShape(30.dp),
             ) {
                 Text(
                     text = "Get Started",

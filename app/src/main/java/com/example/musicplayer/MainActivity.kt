@@ -36,6 +36,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.musicplayer.trialLogic.AudioFile
 import com.example.musicplayer.ui.screens.getStartedScreen.ChooseThemeScreen
+import com.example.musicplayer.ui.screens.getStartedScreen.GetStartedScreen
 import com.example.musicplayer.ui.theme.MusicPlayerTheme
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
@@ -104,6 +105,7 @@ class MainActivity : ComponentActivity() {
             MusicPlayerTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Spacer(modifier = Modifier.padding(innerPadding))
+                    //GetStartedScreen()
                     ChooseThemeScreen()
                     /*
                     val viewModel = viewModel<PermissionsViewModel>()
