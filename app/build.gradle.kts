@@ -66,4 +66,30 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // view model
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    // ViewModel
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    // LiveData
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+
+    // activity and fragment for permission
+    implementation(libs.androidx.activity.ktx)
+    // Kotlin
+    implementation(libs.androidx.fragment.ktx)
+    // Compose
+    implementation(libs.androidx.fragment.compose)
+
+    implementation(libs.androidx.media3.datasource.okhttp)
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.ui)
+    implementation(libs.androidx.media3.session)
+    implementation(libs.androidx.legacy.support.v4) // Needed MediaSessionCompat.Token
+    // Glide
+    implementation(libs.glide)
+    implementation (libs.accompanist.permissions)
+
+    // Coil
+    implementation(libs.coil.compose)
 }
