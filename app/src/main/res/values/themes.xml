@@ -2,4 +2,10 @@
 <resources>
 
     <style name="Theme.MusicPlayer" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.Starting" parent="Theme.SplashScreen" >
+        <item name="postSplashScreenTheme">@style/Theme.MusicPlayer</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/animated_logo</item>
+    </style>
+
 </resources>

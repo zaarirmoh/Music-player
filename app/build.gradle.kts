@@ -92,4 +92,11 @@ dependencies {
 
     // Coil
     implementation(libs.coil.compose)
+
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.material.icons.extended)
+
+    implementation(libs.androidx.core.splashscreen)
+
+    implementation(libs.androidx.datastore.preferences)
 }
