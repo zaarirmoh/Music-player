@@ -81,11 +81,13 @@ dependencies {
     // Compose
     implementation(libs.androidx.fragment.compose)
 
+    implementation(libs.androidx.media3.exoplayer.dash)
     implementation(libs.androidx.media3.datasource.okhttp)
     implementation(libs.androidx.media3.exoplayer)
     implementation(libs.androidx.media3.ui)
     implementation(libs.androidx.media3.session)
     implementation(libs.androidx.legacy.support.v4) // Needed MediaSessionCompat.Token
+    implementation(libs.androidx.core.ktx.v1131)
     // Glide
     implementation(libs.glide)
     implementation (libs.accompanist.permissions)
@@ -99,4 +101,9 @@ dependencies {
     implementation(libs.androidx.core.splashscreen)
 
     implementation(libs.androidx.datastore.preferences)
+
+    implementation(libs.accompanist.pager)
+    implementation(libs.accompanist.pager.indicators)
+
+    implementation(libs.accompanist.systemuicontroller)
 }

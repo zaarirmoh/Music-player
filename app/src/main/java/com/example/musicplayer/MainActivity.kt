@@ -2,6 +2,7 @@ package com.example.musicplayer
 
 import android.animation.ObjectAnimator
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -12,20 +13,16 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.datastore.core.DataStore
@@ -34,9 +31,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.musicplayer.trialLogic.AudioFile
-import com.example.musicplayer.ui.screens.getStartedScreen.ChooseThemeScreen
-import com.example.musicplayer.ui.screens.getStartedScreen.GetStartedScreen
+import com.example.musicplayer.audio.PlayBackService
 import com.example.musicplayer.ui.theme.MusicPlayerTheme
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
@@ -55,6 +50,7 @@ class MainActivity : ComponentActivity() {
     private val viewModel by viewModels<MusicPlayerViewModel>{ viewModelFactory }
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
+
         val requestPermissionLauncher =
             registerForActivityResult(
                 ActivityResultContracts.RequestPermission()
@@ -70,7 +66,6 @@ class MainActivity : ComponentActivity() {
                     // decision.
                 }
             }
-        super.onCreate(savedInstanceState)
         installSplashScreen().apply {
             setKeepOnScreenCondition {
                 !viewModel.isReady.value
@@ -101,41 +96,42 @@ class MainActivity : ComponentActivity() {
             }
         }
         enableEdgeToEdge()
+        super.onCreate(savedInstanceState)
         setContent {
             MusicPlayerTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                //Surface(modifier = Modifier.fillMaxSize()){
                     Spacer(modifier = Modifier.padding(innerPadding))
+
                     //GetStartedScreen()
-                    ChooseThemeScreen()
+                    //ChooseThemeScreen()
+                    //HomeScreen()
+                    val intent = Intent(this, PlayBackService::class.java)
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Button(onClick = {
+                            startService(intent)
+                        }) {
+                            Text(text = "Play")
+                        }
+                    }
+                    //startForegroundService(intent)
+                    //MusicPlayerPager()
                     /*
-                    val viewModel = viewModel<PermissionsViewModel>()
-                    val audioViewModel = viewModel<AudioViewModel>()
+                    val viewModel1 = PermissionsViewModel()
+                    val audioViewModel = AudioViewModel()
                     val cameraPermissionResultLauncher = rememberLauncherForActivityResult(
                         contract = ActivityResultContracts.RequestPermission(),
                         onResult = { isGranted ->
-                            viewModel.onPermissionResult(
-                                permission = Manifest.permission.READ_MEDIA_AUDIO,
+                            viewModel1.onPermissionResult(
+                                permission = Manifest.permission.POST_NOTIFICATIONS,
                                 isGranted = isGranted
                             )
                         }
                     )
-                     */
-                    /*
-                    val audioFiles = remember { mutableStateListOf<AudioFile>() }
-                    val coroutineScope = rememberCoroutineScope()
-
-                    LaunchedEffect(Unit) {
-                        coroutineScope.launch(Dispatchers.IO) {
-                            val files = audioViewModel.loadAudioFiles(contentResolver)
-                            audioFiles.addAll(files)
-                        }
-                    }
-
-                    AudioList(audioFiles) { audioFile ->
-                        // Handle audio file click, e.g., start playback
-                    }
-                     */
-                    /*
                     Column(
                         modifier = Modifier.fillMaxSize(),
                         verticalArrangement = Arrangement.Center,
@@ -143,33 +139,22 @@ class MainActivity : ComponentActivity() {
                     ) {
                         Button(onClick = {
                             requestPermissionLauncher.launch(
-                                android.Manifest.permission.READ_MEDIA_AUDIO
+                                Manifest.permission.POST_NOTIFICATIONS
                                 ) }) {
                             Text(text = "Request permissions")
                         }
                     }
+
+
                      */
+
+
                 }
             }
         }
     }
 }
-@Composable
-fun AudioList(audioFiles: List<AudioFile>, onAudioFileClick: (AudioFile) -> Unit) {
-    LazyColumn {
-        items(audioFiles){ audioFile ->
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { onAudioFileClick(audioFile) }
-                    .padding(16.dp)
-            ) {
-                Text(text = audioFile.title, style = MaterialTheme.typography.bodyMedium)
-                Text(text = audioFile.artist, style = MaterialTheme.typography.bodyMedium)
-                Text(text = audioFile.album, style = MaterialTheme.typography.bodyMedium)
-            }
-        }
-    }
-}
+
+
 
 
