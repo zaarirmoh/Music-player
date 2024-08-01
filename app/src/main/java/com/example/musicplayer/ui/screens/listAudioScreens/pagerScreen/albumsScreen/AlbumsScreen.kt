@@ -1,4 +1,4 @@
-package com.example.musicplayer.ui.screens.listAudioScreens
+package com.example.musicplayer.ui.screens.listAudioScreens.pagerScreen.albumsScreen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues

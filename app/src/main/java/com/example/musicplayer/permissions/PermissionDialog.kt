@@ -1,23 +1,15 @@
 package com.example.musicplayer.permissions
 
-import android.Manifest
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.BasicAlertDialog
-import androidx.compose.material3.Divider
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PermissionDialog(
     permissionTextProvider: PermissionTextProvider,
@@ -27,39 +19,35 @@ fun PermissionDialog(
     onGoToAppSettingsClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    BasicAlertDialog(
+    AlertDialog(
         onDismissRequest = onDismiss,
-        content = {
-            Column(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(text = "Permission required")
-                HorizontalDivider()
+        confirmButton = {
+            TextButton(onClick = {
+                if (isPermanentlyDeclined) {
+                    onGoToAppSettingsClick()
+                } else {
+                    onOkClick()
+                }
+            }) {
                 Text(
-                    text = if(isPermanentlyDeclined) {
+                    text = if (isPermanentlyDeclined) {
                         "Grant permission"
                     } else {
                         "OK"
-                    },
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            if (isPermanentlyDeclined) {
-                                onGoToAppSettingsClick()
-                            } else {
-                                onOkClick()
-                            }
-                        }
-                        .padding(16.dp)
-                )
-                Text(
-                    text = permissionTextProvider.getDescription(
-                        isPermanentlyDeclined = isPermanentlyDeclined
-                    )
+                    }
                 )
             }
+        },
+        dismissButton = {},
+        title = {
+            Text(text = "Permission required")
+        },
+        text = {
+            Text(
+                text = permissionTextProvider.getDescription(
+                    isPermanentlyDeclined = isPermanentlyDeclined
+                )
+            )
         },
         modifier = modifier
     )
@@ -69,38 +57,37 @@ interface PermissionTextProvider {
     fun getDescription(isPermanentlyDeclined: Boolean): String
 }
 
-class CameraPermissionTextProvider: PermissionTextProvider {
+class NotificationPermissionTextProvider: PermissionTextProvider {
     override fun getDescription(isPermanentlyDeclined: Boolean): String {
         return if(isPermanentlyDeclined) {
-            "It seems you permanently declined camera permission. " +
+            "It seems you permanently declined post notification permission. " +
                     "You can go to the app settings to grant it."
         } else {
-            "This app needs access to your camera so that your friends " +
-                    "can see you in a call."
+            "This app needs to be able to post notifications so that " +
+                    "you know when an audio is playing in the background."
         }
     }
 }
 
-class RecordAudioPermissionTextProvider: PermissionTextProvider {
+class AudioPermissionTextProvider: PermissionTextProvider {
     override fun getDescription(isPermanentlyDeclined: Boolean): String {
         return if(isPermanentlyDeclined) {
-            "It seems you permanently declined microphone permission. " +
+            "It seems you permanently declined read media permission. " +
                     "You can go to the app settings to grant it."
         } else {
-            "This app needs access to your microphone so that your friends " +
-                    "can hear you in a call."
+            "This app needs access to your audio files so it can play " +
+                    "your songs and audios."
         }
     }
 }
 
-class PhoneCallPermissionTextProvider: PermissionTextProvider {
+class ExternalStoragePermissionTextProvider: PermissionTextProvider {
     override fun getDescription(isPermanentlyDeclined: Boolean): String {
         return if(isPermanentlyDeclined) {
-            "It seems you permanently declined phone calling permission. " +
+            "It seems you permanently declined read external storage permission. " +
                     "You can go to the app settings to grant it."
         } else {
-            "This app needs phone calling permission so that you can talk " +
-                    "to your friends."
+            "This app needs access to your external storage to get audio files. "
         }
     }
 }

@@ -1,5 +1,11 @@
 package com.example.musicplayer.ui.screens.getStartedScreen
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,7 +22,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
@@ -27,14 +32,28 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.musicplayer.R
+import com.example.musicplayer.permissions.PermissionsViewModel
 import com.example.musicplayer.ui.theme.balooFontFamily
 import com.example.musicplayer.ui.theme.chopsicFontFamily
 
 @Composable
 fun GetStartedScreen(
     modifier: Modifier = Modifier,
-    onGetStartedClicked: () -> Unit = {}
+    onAllPermissionsGranted: () -> Unit = {},
+    permissionsToRequest: Array<String>,
+    permissionsViewModel: PermissionsViewModel,
 ){
+    val multiplePermissionResultLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions(),
+        onResult = { perms ->
+            permissionsToRequest.forEach { permission ->
+                permissionsViewModel.onPermissionResult(
+                    permission = permission,
+                    isGranted = perms[permission] == true
+                )
+            }
+        }
+    )
     Box(
         modifier = modifier.fillMaxSize()
     ) {
@@ -105,7 +124,9 @@ fun GetStartedScreen(
                     .fillMaxWidth()
                     .padding(start = 32.dp, end = 32.dp, bottom = 100.dp)
                     .height(92.dp),
-                onClick = onGetStartedClicked,
+                onClick = {
+                    multiplePermissionResultLauncher.launch(permissionsToRequest)
+                    onAllPermissionsGranted()},
                 shape = RoundedCornerShape(30.dp),
             ) {
                 Text(
@@ -117,4 +138,10 @@ fun GetStartedScreen(
             }
         }
     }
+}
+fun Activity.openAppSettings() {
+    Intent(
+        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+        Uri.fromParts("package", packageName, null)
+    ).also(::startActivity)
 }

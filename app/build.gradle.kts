@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -106,4 +107,9 @@ dependencies {
     implementation(libs.accompanist.pager.indicators)
 
     implementation(libs.accompanist.systemuicontroller)
+
+    implementation(libs.androidx.activity.compose.v191)
+
+    implementation(libs.kotlinx.serialization.json)
+
 }

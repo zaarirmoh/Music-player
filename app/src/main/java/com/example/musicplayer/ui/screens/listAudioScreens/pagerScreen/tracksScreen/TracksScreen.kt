@@ -1,16 +1,11 @@
-package com.example.musicplayer.ui.screens.listAudioScreens
+package com.example.musicplayer.ui.screens.listAudioScreens.pagerScreen.tracksScreen
 
-import android.app.Notification
 import android.content.Context
-import android.content.Intent
-import android.support.v4.media.session.MediaSessionCompat
 import androidx.annotation.OptIn
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DeleteForever
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,15 +22,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.media3.common.MediaItem
-import androidx.media3.common.MediaMetadata
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.session.DefaultMediaNotificationProvider
-import androidx.media3.session.MediaNotification
-import androidx.media3.session.MediaSession
-import androidx.media3.session.MediaSessionService
 import androidx.media3.ui.PlayerView
-import com.example.musicplayer.R
 import com.example.musicplayer.audio.AudioFile
 import com.example.musicplayer.audio.AudioViewModel
 import com.example.musicplayer.ui.majorComponents.AudioList

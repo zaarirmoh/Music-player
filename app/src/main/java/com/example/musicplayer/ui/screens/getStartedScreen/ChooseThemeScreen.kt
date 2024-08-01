@@ -1,9 +1,12 @@
 package com.example.musicplayer.ui.screens.getStartedScreen
 
+import android.Manifest
+import android.app.Activity
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,10 +28,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,14 +40,36 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 import com.example.musicplayer.R
+import com.example.musicplayer.permissions.AudioPermissionTextProvider
+import com.example.musicplayer.permissions.ExternalStoragePermissionTextProvider
+import com.example.musicplayer.permissions.NotificationPermissionTextProvider
+import com.example.musicplayer.permissions.PermissionDialog
+import com.example.musicplayer.permissions.PermissionsViewModel
 import com.example.musicplayer.ui.theme.balooFontFamily
 
 @Composable
 fun ChooseThemeScreen(
     modifier: Modifier = Modifier,
-    onContinueClicked: () -> Unit = {}
+    onContinueButtonClicked: () -> Unit = {},
+    isAppThemeDark: MutableState<Boolean>,
+    permissionsViewModel: PermissionsViewModel,
+    activity: Activity,
+    permissionsToRequest: Array<String>
 ){
+    val dialogQueue = permissionsViewModel.visiblePermissionDialogQueue
+    val multiplePermissionResultLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions(),
+        onResult = { perms ->
+            permissionsToRequest.forEach { permission ->
+                permissionsViewModel.onPermissionResult(
+                    permission = permission,
+                    isGranted = perms[permission] == true
+                )
+            }
+        }
+    )
     Box(
         modifier = modifier.fillMaxSize()
     ) {
@@ -57,16 +79,48 @@ fun ChooseThemeScreen(
             modifier = modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         )
-        ChooseTheme()
+        ChooseTheme(
+            onContinueButtonClicked = onContinueButtonClicked,
+            isAppThemeDark = isAppThemeDark
+        )
     }
+
+    dialogQueue
+        .reversed()
+        .forEach { permission ->
+            PermissionDialog(
+                permissionTextProvider = when (permission) {
+                    Manifest.permission.READ_MEDIA_AUDIO -> {
+                        AudioPermissionTextProvider()
+                    }
+                    Manifest.permission.POST_NOTIFICATIONS -> {
+                        NotificationPermissionTextProvider()
+                    }
+                    Manifest.permission.READ_EXTERNAL_STORAGE -> {
+                        ExternalStoragePermissionTextProvider()
+                    }
+                    else -> return@forEach
+                },
+                isPermanentlyDeclined = !shouldShowRequestPermissionRationale(activity,permission),
+                onDismiss = permissionsViewModel::dismissDialog,
+                onOkClick = {
+                    permissionsViewModel.dismissDialog()
+                    multiplePermissionResultLauncher.launch(
+                        arrayOf(permission)
+                    )
+                },
+                onGoToAppSettingsClick = { activity.openAppSettings() }
+            )
+        }
 }
+
 @Preview
 @Composable
 fun ChooseTheme(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onContinueButtonClicked: () -> Unit = {},
+    isAppThemeDark: MutableState<Boolean> = mutableStateOf(true)
 ){
-    val themeChosen: MutableState<Boolean> = remember { mutableStateOf(true)}
-    themeChosen.value = isSystemInDarkTheme()
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -80,14 +134,16 @@ fun ChooseTheme(
             textAlign = TextAlign.Center,
         )
         Spacer(modifier = modifier.height(40.dp))
-        ThemeButtons(themeChosen = themeChosen)
+        ThemeButtons(
+            themeChosen = isAppThemeDark,
+        )
         Spacer(modifier = modifier.height(70.dp))
         Button(
             modifier = modifier
                 .fillMaxWidth()
                 .padding(start = 32.dp, end = 32.dp, bottom = 100.dp)
                 .height(92.dp),
-            onClick = {  },
+            onClick = onContinueButtonClicked,
             shape = RoundedCornerShape(30.dp),
         ) {
             Text(
@@ -99,6 +155,7 @@ fun ChooseTheme(
         }
     }
 }
+
 @Preview
 @Composable
 fun ThemeButtons(
@@ -113,6 +170,7 @@ fun ThemeButtons(
         LightThemeButton(themeChosen = themeChosen)
     }
 }
+
 @Preview
 @Composable
 fun DarkThemeButton(
@@ -126,7 +184,7 @@ fun DarkThemeButton(
             contentAlignment = Alignment.Center, // Center the content
             modifier = Modifier
                 .size(73.dp)
-                .clickable { if(!themeChosen.value) themeChosen.value = !themeChosen.value }
+                .clickable { (if(!themeChosen.value) themeChosen.value = !themeChosen.value) }
         ) {
             Card(
                 modifier = Modifier
@@ -158,6 +216,7 @@ fun DarkThemeButton(
     }
 
 }
+
 @Preview
 @Composable
 fun LightThemeButton(
