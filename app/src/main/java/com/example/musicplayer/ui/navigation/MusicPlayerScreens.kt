@@ -1,5 +1,6 @@
 package com.example.musicplayer.ui.navigation
 
+import android.content.Context
 import com.example.musicplayer.permissions.PermissionsViewModel
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
@@ -14,3 +15,9 @@ data class ChooseThemeScreenN(
 
 @Serializable
 object HomeScreenN
+
+data class PagerScreen(
+    val name: String,
+    val context: Context,
+
+)

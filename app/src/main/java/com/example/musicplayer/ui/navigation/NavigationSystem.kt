@@ -6,12 +6,11 @@ import androidx.compose.runtime.MutableState
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.musicplayer.permissions.PermissionsViewModel
 import com.example.musicplayer.ui.screens.getStartedScreen.chooseThemeNavigation
 import com.example.musicplayer.ui.screens.getStartedScreen.getStartedNavigation
-import com.example.musicplayer.ui.screens.listAudioScreens.homeScreen.HomeScreenDeprecated
+import com.example.musicplayer.ui.screens.listAudioScreens.homeScreen.homeNavigation
 import kotlin.reflect.KClass
 
 @Composable
@@ -39,9 +38,7 @@ fun <T : Any> MusicPlayerNavigation(
             permissionsViewModel = permissionsViewModel
         )
 
-        composable<HomeScreenN>{
-            HomeScreenDeprecated()
-        }
+        homeNavigation()
 
     }
 }

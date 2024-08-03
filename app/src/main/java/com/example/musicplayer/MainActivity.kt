@@ -89,7 +89,7 @@ class MainActivity : ComponentActivity() {
                     val systemUiController = rememberSystemUiController()
                     systemUiController.setStatusBarColor(
                         color = Color.Transparent, // Set your desired color here
-                        darkIcons = isAppThemeDark.value
+                        darkIcons = !isAppThemeDark.value
                     )
 
                     val startDestination = viewModel.getStartingScreen()
@@ -109,7 +109,7 @@ class MainActivity : ComponentActivity() {
                     }
 
                     /*
-                    val intent = Intent(this, PlayBackService::class.java)
+
                     Column(
                         modifier = Modifier.fillMaxSize(),
                         horizontalAlignment = Alignment.CenterHorizontally,

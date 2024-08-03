@@ -12,5 +12,5 @@ data class AudioFile(
     val artist: String,
     val album: String,
     val data: String,
-    var albumArt: Bitmap? = null
+    var albumArt: Bitmap?
 )

@@ -1,12 +1,10 @@
 package com.example.musicplayer.ui.majorComponents
 
 import android.graphics.Bitmap
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,14 +13,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material3.Card
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -36,51 +31,24 @@ import androidx.compose.ui.unit.sp
 import com.example.musicplayer.audio.AudioFile
 
 @Composable
-fun AudioList(
-    modifier: Modifier = Modifier,
-    audioFiles: List<AudioFile>,
-    onAudioFileClicked: (AudioFile) -> Unit = {},
-    paddingValues: PaddingValues
-) {
-    LazyColumn(
-        modifier = modifier.padding(paddingValues).padding(top = 10.dp),
-    ) {
-        items(audioFiles){ audioFile ->
-            AudioItem(
-                audioFile = audioFile,
-                onAudioFileClicked = onAudioFileClicked,
-                bitmap = audioFile.albumArt
-            )
-            Log.d(audioFile.title,audioFile.toString())
-            Spacer(modifier = modifier.height(5.dp))
-            HorizontalDivider(
-                modifier = modifier.padding(start = 78.dp, end = 9.dp),
-                color = MaterialTheme.colorScheme.surfaceVariant
-            )
-            Spacer(modifier = modifier.height(5.dp))
-        }
-    }
-}
-
-@Composable
 fun AudioItem(
     modifier: Modifier = Modifier,
     audioFile: AudioFile,
-    onAudioFileClicked: (AudioFile) -> Unit,
+    audioFileIndex: Int,
     bitmap: Bitmap?,
+    onAudioFileClicked: (Int) -> Unit,
 ){
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clickable { onAudioFileClicked(audioFile) },
+            .height((52 + 20).dp)
+            .clickable { onAudioFileClicked(audioFileIndex) },
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Spacer(modifier = Modifier.width(15.dp))
+        Spacer(modifier = Modifier.width(18.dp))
         AudioItemPhoto(bitmap =bitmap)
-        Spacer(modifier = Modifier.width(15.dp))
-        Column(
-
-        ) {
+        Spacer(modifier = Modifier.width(18.dp))
+        Column {
             Text(
                 text = if(audioFile.title.length < 29) audioFile.title else audioFile.title.substring(0,28)+"...",
                 style = MaterialTheme.typography.bodyLarge,
@@ -117,7 +85,7 @@ fun AudioItemPhoto(
 ){
     Card(
         onClick = { /*TODO*/ },
-        modifier = modifier.size(48.dp),
+        modifier = modifier.size(52.dp),
         shape = RoundedCornerShape(8.dp),
     ) {
         if (bitmap != null) {

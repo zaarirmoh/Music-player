@@ -1,4 +1,4 @@
-package com.example.musicplayer.ui.majorComponents
+package com.example.musicplayer.appBars
 
 import android.app.Activity
 import androidx.compose.material3.MaterialTheme

@@ -111,5 +111,6 @@ dependencies {
     implementation(libs.androidx.activity.compose.v191)
 
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.gson)
 
 }

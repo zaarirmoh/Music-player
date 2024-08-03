@@ -1,82 +1,30 @@
-package com.example.musicplayer.ui.screens.listAudioScreens.pagerScreen.tracksScreen
+package com.example.musicplayer.ui.notSureComponent
 
 import android.content.Context
 import androidx.annotation.OptIn
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.media3.common.MediaItem
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.ui.PlayerView
-import com.example.musicplayer.audio.AudioFile
-import com.example.musicplayer.audio.AudioViewModel
-import com.example.musicplayer.ui.majorComponents.AudioList
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-
-@Composable
-fun TracksScreen(
-    modifier: Modifier = Modifier,
-    paddingValues: PaddingValues
-){
-    val audioViewModel: AudioViewModel = AudioViewModel()
-    val audioFiles = remember { mutableStateListOf<AudioFile>() }
-    val coroutineScope = rememberCoroutineScope()
-    val context = LocalContext.current
-    val contentResolver = context.contentResolver
-    var startAudio by remember { mutableStateOf(true)}
-    LaunchedEffect(Unit) {
-        coroutineScope.launch(Dispatchers.IO) {
-            val files = audioViewModel.loadAudioFiles(contentResolver)
-            audioFiles.addAll(files)
-            audioViewModel.mapAudioWithPicture(audioFiles, contentResolver)
-        }
-    }
-    //val exoPlayer = rememberExoPlayer(context,"/storage/emulated/0/snaptube/download/SnapTube Audio/Soolking feat. Dadju - Meleğim [Clip Officiel] Prod by Nyadjiko(MP3_160K).mp3")
-    //PlayerView(exoPlayer = exoPlayer)
-    //AudioPlayerControls(exoPlayer = exoPlayer)
-
-
-    AudioList(
-        audioFiles = audioFiles,
-        paddingValues = paddingValues,
-        onAudioFileClicked = {
-            if(startAudio){
-                audioViewModel.playAudio(it.data)
-                startAudio = false
-            }else{
-                audioViewModel.stopAudio()
-                startAudio = true
-            }
-        }
-    )
-
-
-}
 
 @OptIn(UnstableApi::class)
 @Composable
 fun PlayerView(exoPlayer: ExoPlayer) {
     AndroidView(
         factory = { context ->
-            PlayerView(context).apply {
+            androidx.media3.ui.PlayerView(context).apply {
                 player = exoPlayer
                 useController = false
             }
@@ -188,5 +136,6 @@ class PlaybackService : MediaSessionService() {
         mediaSession
 }
  */
-
-
+//val exoPlayer = rememberExoPlayer(context,"/storage/emulated/0/snaptube/download/SnapTube Audio/Soolking feat. Dadju - Meleğim [Clip Officiel] Prod by Nyadjiko(MP3_160K).mp3")
+//PlayerView(exoPlayer = exoPlayer)
+//AudioPlayerControls(exoPlayer = exoPlayer)
