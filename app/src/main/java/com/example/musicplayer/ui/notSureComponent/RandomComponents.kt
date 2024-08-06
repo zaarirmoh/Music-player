@@ -16,17 +16,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 
 @OptIn(UnstableApi::class)
 @Composable
-fun PlayerView(exoPlayer: ExoPlayer) {
+fun PlayerView(exoPlayer: Player) {
     AndroidView(
         factory = { context ->
             androidx.media3.ui.PlayerView(context).apply {
                 player = exoPlayer
-                useController = false
+                useController = true
+                artworkDisplayMode = androidx.media3.ui.PlayerView.ARTWORK_DISPLAY_MODE_FIT
             }
         },
         modifier = Modifier.fillMaxSize()
@@ -139,3 +141,12 @@ class PlaybackService : MediaSessionService() {
 //val exoPlayer = rememberExoPlayer(context,"/storage/emulated/0/snaptube/download/SnapTube Audio/Soolking feat. Dadju - Meleğim [Clip Officiel] Prod by Nyadjiko(MP3_160K).mp3")
 //PlayerView(exoPlayer = exoPlayer)
 //AudioPlayerControls(exoPlayer = exoPlayer)
+/*
+var mediaController: MediaController? = null
+    controllerFuture.addListener({
+        mediaController = controllerFuture.get()
+    }, MoreExecutors.directExecutor())
+    //val player = ExoPlayer.Builder(context).build()
+
+    //mediaController?.let { PlayerView(exoPlayer = it) }
+ */

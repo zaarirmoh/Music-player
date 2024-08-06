@@ -19,5 +19,4 @@ object HomeScreenN
 data class PagerScreen(
     val name: String,
     val context: Context,
-
 )

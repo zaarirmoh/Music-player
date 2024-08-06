@@ -17,3 +17,4 @@ class MusicPlayerApp: Application() {
         notificationManager.createNotificationChannel(channel)
     }
 }
+const val NOTIFICATION_ID = 1

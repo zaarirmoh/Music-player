@@ -107,30 +107,8 @@ class MainActivity : ComponentActivity() {
                             isAppThemeDark = isAppThemeDark
                         )
                     }
-
-                    /*
-
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        Button(onClick = {
-                            startService(intent)
-                        }) {
-                            Text(text = "Play")
-                        }
-                    }
-                    startForegroundService(intent)
-                     */
-
                 }
             }
         }
     }
 }
-
-
-
-
-

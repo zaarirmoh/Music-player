@@ -1,45 +1,32 @@
 package com.example.musicplayer.audio
 
+import android.app.Notification
+import android.app.PendingIntent
 import android.content.ContentResolver
+import android.content.Context
+import android.content.Intent
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.MediaMetadataRetriever
-import android.net.Uri
-import android.os.Build
 import android.provider.MediaStore
-import android.util.Log
-import android.util.Size
-import androidx.annotation.RequiresApi
-import androidx.core.graphics.set
-import androidx.core.net.toUri
+import androidx.annotation.OptIn
+import androidx.core.app.NotificationCompat
 import androidx.lifecycle.ViewModel
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
-import java.io.IOException
+import androidx.media3.common.util.UnstableApi
+import androidx.media3.session.MediaSession
+import com.example.musicplayer.MainActivity
+import com.example.musicplayer.R
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class AudioViewModel: ViewModel() {
 
-    fun playAudio(player: Player){
-        player.prepare()
-        player.play()
-    }
-
-    fun playAudio(player: Player,audioIndex: Int){
-        player.seekTo(audioIndex,0)
-        player.prepare()
-        player.play()
-    }
-
-    fun pauseAudio(player: Player){
-        player.pause()
-    }
-
-    fun releasePlayer(player: Player){
-        player.stop()
-        player.release()
-    }
+    private val _audioFiles = MutableStateFlow(listOf<AudioFile>())
+    val audioFiles = _audioFiles.asStateFlow()
 
     private fun createMediaItem(audioFile: AudioFile): MediaItem {
         return MediaItem
@@ -115,7 +102,78 @@ class AudioViewModel: ViewModel() {
                 audioList.add(AudioFile(id, title, artist, album, data, albumArt))
             }
         }
+        _audioFiles.value = audioList
         return audioList
     }
 
+    @OptIn(UnstableApi::class)
+    fun createNotification(
+        context: Context,
+        isPlaying: Boolean,
+        audioFile: AudioFile,
+        mediaSession: MediaSession
+    ): Notification {
+        /** Play action ---------------------------*/
+        val playIntent = Intent(context, PlayBackService::class.java).apply {
+            action = "ACTION_PLAY"
+        }
+        val playPendingIntent: PendingIntent = PendingIntent.getService(context, 0, playIntent, PendingIntent.FLAG_IMMUTABLE)
+        val playAction = NotificationCompat.Action(R.drawable.play_arrow_48px,"Play",playPendingIntent)
+
+        /** Pause action ---------------------------*/
+        val pauseIntent = Intent(context, PlayBackService::class.java).apply {
+            action = "ACTION_PAUSE"
+        }
+        val pausePendingIntent: PendingIntent = PendingIntent.getService(context, 0, pauseIntent, PendingIntent.FLAG_IMMUTABLE)
+        val pauseAction = NotificationCompat.Action(R.drawable.pause_48px,"Pause",pausePendingIntent)
+
+        /** Next action ---------------------------*/
+        val nextIntent = Intent(context, PlayBackService::class.java).apply {
+            action = "ACTION_NEXT"
+        }
+        val nextPendingIntent: PendingIntent = PendingIntent.getService(context, 0, nextIntent, PendingIntent.FLAG_IMMUTABLE)
+        val nextAction = NotificationCompat.Action(R.drawable.skip_next_48px,"Next",nextPendingIntent)
+
+        /** Previous action ---------------------------*/
+        val previousIntent = Intent(context, PlayBackService::class.java).apply {
+            action = "ACTION_PREVIOUS"
+        }
+        val previousPendingIntent: PendingIntent = PendingIntent.getService(context, 0, previousIntent, PendingIntent.FLAG_IMMUTABLE)
+        val previousAction = NotificationCompat.Action(R.drawable.skip_previous_48px,"Previous",previousPendingIntent)
+
+        /** Close action ---------------------------*/
+        val closeIntent = Intent(context, PlayBackService::class.java).apply {
+            action = "ACTION_CLOSE"
+        }
+        val closePendingIntent: PendingIntent = PendingIntent.getService(context, 0, closeIntent, PendingIntent.FLAG_IMMUTABLE)
+        val closeAction = NotificationCompat.Action(R.drawable.close_48,"Close",closePendingIntent)
+
+        /** Content action ---------------------------*/
+        val contentIntent = Intent(context, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        val contentPendingIntent: PendingIntent = PendingIntent.getActivity(
+            context, 0, contentIntent, PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val notification = NotificationCompat.Builder(context,"media_notification")
+            .setSmallIcon(R.drawable.music_note_48px)
+            .setContentTitle(audioFile.artist)
+            .setContentText(audioFile.title)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setLargeIcon(audioFile.albumArt)
+            .setContentIntent(contentPendingIntent)
+            .setStyle(
+                androidx.media.app.NotificationCompat.MediaStyle()
+                    .setMediaSession(mediaSession.sessionCompatToken)
+                    .setShowActionsInCompactView(0,1,2,4)
+            )
+            .addAction(previousAction)
+            .addAction(if(isPlaying) pauseAction else playAction)
+            .addAction(nextAction)
+            .addAction(closeAction)
+            .setOnlyAlertOnce(true)
+            .build()
+        return notification
+    }
 }
