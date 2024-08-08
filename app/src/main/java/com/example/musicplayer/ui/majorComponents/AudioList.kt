@@ -2,6 +2,7 @@ package com.example.musicplayer.ui.majorComponents
 
 import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -20,7 +21,8 @@ fun AudioList(
 ) {
     LazyColumn(
         modifier = modifier
-            .padding(top = 10.dp)
+            .fillMaxSize()
+            .padding(top = 10.dp, bottom = 70.dp)
     ) {
         itemsIndexed(audioFiles){ audioIndex,audioFile ->
             AudioItem(

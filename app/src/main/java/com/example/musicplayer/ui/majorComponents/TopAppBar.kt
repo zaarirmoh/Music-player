@@ -34,15 +34,21 @@ import com.example.musicplayer.ui.theme.chopsicFontFamily
 @Composable
 fun TopAppBar(
     modifier: Modifier = Modifier,
+    currentPage: Int,
+    onSearchClicked: () -> Unit,
+    onMenuClicked: () -> Unit,
     onTracksClicked: () -> String,
     onAlbumsClicked: () -> String,
     onPlaylistsClicked: () -> String,
     onArtistsClicked: () -> String,
-    onFavoritesClicked: () -> String
+    onFavoritesClicked: () -> String,
+    dropDownMenu: @Composable () -> Unit = {},
 ){
     var pageSelected: String by remember { mutableStateOf("Tracks") }
     Box(
-        modifier = modifier.background(MaterialTheme.colorScheme.surfaceContainer)
+        modifier = modifier
+            .background(MaterialTheme.colorScheme.surfaceContainer)
+            .fillMaxWidth()
     ){
         Column(
             modifier = modifier
@@ -63,13 +69,14 @@ fun TopAppBar(
                     modifier = modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
                 ) {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    dropDownMenu()
+                    IconButton(onClick = onSearchClicked) {
                         Icon(
                             imageVector = Icons.Rounded.Search,
                             contentDescription = null,
                         )
                     }
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = onMenuClicked) {
                         Icon(
                             imageVector = Icons.Filled.MoreVert,
                             contentDescription = null,
@@ -90,56 +97,44 @@ fun TopAppBar(
                 TextButton(onClick = { pageSelected = onTracksClicked() }) {
                     Text(
                         text = "Tracks",
-                        color = if(pageSelected == "Tracks") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
-                        fontWeight = if(pageSelected == "Tracks") FontWeight.Bold else null,
-                        fontSize = if(pageSelected == "Tracks") 19.sp else TextUnit.Unspecified
+                        color = if(currentPage == 0) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
+                        fontWeight = if(currentPage == 0) FontWeight.Bold else null,
+                        fontSize = if(currentPage == 0) 19.sp else TextUnit.Unspecified
                     )
                 }
                 TextButton(onClick = { pageSelected = onAlbumsClicked() }) {
                     Text(
                         text = "Albums",
-                        color = if(pageSelected == "Albums") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
-                        fontWeight = if(pageSelected == "Albums") FontWeight.Bold else null,
-                        fontSize = if(pageSelected == "Albums") 19.sp else TextUnit.Unspecified
+                        color = if(currentPage == 1) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
+                        fontWeight = if(currentPage == 1) FontWeight.Bold else null,
+                        fontSize = if(currentPage == 1) 19.sp else TextUnit.Unspecified
                     )
                 }
                 TextButton(onClick = { pageSelected = onPlaylistsClicked() }) {
                     Text(
                         text = "Playlists",
-                        color = if(pageSelected == "Playlists") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
-                        fontWeight = if(pageSelected == "Playlists") FontWeight.Bold else null,
-                        fontSize = if(pageSelected == "Playlists") 19.sp else TextUnit.Unspecified
+                        color = if(currentPage == 2) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
+                        fontWeight = if(currentPage == 2) FontWeight.Bold else null,
+                        fontSize = if(currentPage == 2) 19.sp else TextUnit.Unspecified
                     )
                 }
                 TextButton(onClick = { pageSelected = onArtistsClicked() }) {
                     Text(
                         text = "Artists",
-                        color = if(pageSelected == "Artists") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
-                        fontWeight = if(pageSelected == "Artists") FontWeight.Bold else null,
-                        fontSize = if(pageSelected == "Artists") 19.sp else TextUnit.Unspecified
+                        color = if(currentPage == 3) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
+                        fontWeight = if(currentPage == 3) FontWeight.Bold else null,
+                        fontSize = if(currentPage == 3) 19.sp else TextUnit.Unspecified
                     )
                 }
                 TextButton(onClick = { pageSelected = onFavoritesClicked() }) {
                     Text(
                         text = "Favorites",
-                        color = if(pageSelected == "Favorites") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
-                        fontWeight = if(pageSelected == "Favorites") FontWeight.Bold else null,
-                        fontSize = if(pageSelected == "Favorites") 19.sp else TextUnit.Unspecified
+                        color = if(currentPage == 4) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
+                        fontWeight = if(currentPage == 4) FontWeight.Bold else null,
+                        fontSize = if(currentPage == 4) 19.sp else TextUnit.Unspecified,
+                        maxLines = 1
                     )
                 }
-
-                /*
-                // isShuffle just for now i will change it later
-                var isShuffle: Boolean by remember { mutableStateOf(false) }
-                IconButton(onClick = { isShuffle = !isShuffle }) {
-                    Icon(
-                        imageVector = Icons.Filled.Shuffle,
-                        contentDescription = null,
-                        tint = if(isShuffle) MaterialTheme.colorScheme.primary else  LocalContentColor.current
-                    )
-                }
-                 */
-
             }
         }
     }

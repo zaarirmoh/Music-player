@@ -20,6 +20,7 @@ import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 
+/*
 @OptIn(UnstableApi::class)
 @Composable
 fun PlayerView(exoPlayer: Player) {
@@ -70,6 +71,7 @@ fun AudioPlayerControls(exoPlayer: ExoPlayer) {
         }
     }
 }
+ */
 /*
 class PlaybackService : MediaSessionService() {
     private var mediaSession: MediaSession? = null

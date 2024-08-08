@@ -166,7 +166,7 @@ class AudioViewModel: ViewModel() {
             .setStyle(
                 androidx.media.app.NotificationCompat.MediaStyle()
                     .setMediaSession(mediaSession.sessionCompatToken)
-                    .setShowActionsInCompactView(0,1,2,4)
+                    .setShowActionsInCompactView(0,1,2,3)
             )
             .addAction(previousAction)
             .addAction(if(isPlaying) pauseAction else playAction)

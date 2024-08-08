@@ -22,7 +22,6 @@ class PlayBackService: MediaSessionService() {
         player = ExoPlayer.Builder(this).build()
         mediaSession = MediaSession.Builder(this, player!!).build()
     }
-
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
         val audioFilesJson = intent?.getStringExtra(AUDIO_FILES)

@@ -9,6 +9,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.media3.session.MediaController
 import com.example.musicplayer.audio.AudioViewModel
@@ -28,21 +29,34 @@ fun HomeScreen(
     intent: Intent,
     context: Context,
     controllerFuture: ListenableFuture<MediaController>,
+    expendedMenu: MutableState<Boolean>,
+    onSearchClicked: () -> Unit = {},
+    onMenuIconClicked: () -> Unit = {},
+    onSettingsClicked: () -> Unit = {},
     onTracksClicked: () -> String,
     onAlbumsClicked: () -> String,
     onPlaylistsClicked: () -> String,
     onArtistsClicked: () -> String,
-    onFavoritesClicked: () -> String
+    onFavoritesClicked: () -> String,
 ){
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
+                currentPage = pagerState.currentPage,
+                onMenuClicked = onMenuIconClicked,
+                onSearchClicked = onSearchClicked,
                 onTracksClicked = onTracksClicked,
                 onAlbumsClicked = onAlbumsClicked,
                 onPlaylistsClicked = onPlaylistsClicked,
                 onArtistsClicked = onArtistsClicked,
-                onFavoritesClicked = onFavoritesClicked
+                onFavoritesClicked = onFavoritesClicked,
+                dropDownMenu = {
+                    DropDownMenu(
+                        expanded = expendedMenu,
+                        onSettingsClicked = onSettingsClicked
+                    )
+                }
             )
         }
     ) { innerPadding ->
@@ -60,12 +74,7 @@ fun HomeScreen(
                         context = context,
                         controllerFuture = controllerFuture
                     )
-                    1 -> AlbumsScreen(
-                        audioViewModel = audioViewModel,
-                        intent = intent,
-                        context = context,
-                        controllerFuture = controllerFuture
-                    )
+                    1 -> AlbumsScreen()
                     2 -> PlaylistsScreen()
                     3 -> ArtistsScreen()
                     4 -> FavoritesScreen()

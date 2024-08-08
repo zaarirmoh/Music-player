@@ -89,7 +89,8 @@ dependencies {
     implementation(libs.androidx.media3.session)
     implementation(libs.androidx.legacy.support.v4) // Needed MediaSessionCompat.Token
     implementation(libs.androidx.core.ktx.v1131)
-    implementation(libs.support.palette.v7)
+    implementation(libs.androidx.palette)
+    //implementation(libs.support.palette.v7)
     // Glide
     implementation(libs.glide)
     implementation (libs.accompanist.permissions)
