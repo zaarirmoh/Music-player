@@ -36,7 +36,9 @@ import com.example.musicplayer.ui.theme.Shapes
 fun DropDownMenu(
     modifier: Modifier = Modifier,
     expanded: MutableState<Boolean>,
+    onEditClicked: () -> Unit = {},
     onSettingsClicked: () -> Unit = {},
+    onAboutOurApplicationClicked: () -> Unit = {}
 ){
     DropdownMenu(
         expanded = expanded.value,
@@ -53,7 +55,7 @@ fun DropDownMenu(
                 modifier = modifier
                     .fillMaxWidth()
                     .height(60.dp)
-                    .clickable { },
+                    .clickable { onEditClicked() },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Spacer(modifier = modifier.width(15.dp))
@@ -65,7 +67,7 @@ fun DropDownMenu(
                 modifier = modifier
                     .fillMaxWidth()
                     .height(45.dp)
-                    .clickable { },
+                    .clickable { onSettingsClicked() },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Spacer(modifier = modifier.width(15.dp))
@@ -77,7 +79,7 @@ fun DropDownMenu(
                 modifier = modifier
                     .fillMaxWidth()
                     .height(60.dp)
-                    .clickable { },
+                    .clickable { onAboutOurApplicationClicked() },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Spacer(modifier = modifier.width(15.dp))
@@ -88,51 +90,3 @@ fun DropDownMenu(
         }
     }
 }
-/*
-Dialog(onDismissRequest = { /*TODO*/ }) {
-        Card(
-            shape = Shapes.large,
-            modifier = modifier
-                .width(280.dp)
-                .height(165.dp)
-        ) {
-            Row(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .height(60.dp)
-                    .clickable { },
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Spacer(modifier = modifier.width(15.dp))
-                Icon(imageVector = Icons.Rounded.Settings, contentDescription = null)
-                Spacer(modifier = modifier.width(10.dp))
-                Text(text = "write something")
-            }
-            Row(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .height(45.dp)
-                    .clickable { },
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Spacer(modifier = modifier.width(15.dp))
-                Icon(imageVector = Icons.Rounded.Settings, contentDescription = null)
-                Spacer(modifier = modifier.width(10.dp))
-                Text(text = "write something")
-            }
-            Row(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .height(60.dp)
-                    .clickable { },
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Spacer(modifier = modifier.width(15.dp))
-                Icon(imageVector = Icons.Rounded.Settings, contentDescription = null)
-                Spacer(modifier = modifier.width(10.dp))
-                Text(text = "write something")
-            }
-        }
-
-    }
- */

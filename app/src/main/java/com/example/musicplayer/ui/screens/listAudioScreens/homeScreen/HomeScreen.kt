@@ -32,7 +32,9 @@ fun HomeScreen(
     expendedMenu: MutableState<Boolean>,
     onSearchClicked: () -> Unit = {},
     onMenuIconClicked: () -> Unit = {},
+    onEditClicked: () -> Unit = {},
     onSettingsClicked: () -> Unit = {},
+    onAboutOurApplicationClicked: () -> Unit = {},
     onTracksClicked: () -> String,
     onAlbumsClicked: () -> String,
     onPlaylistsClicked: () -> String,
@@ -54,7 +56,9 @@ fun HomeScreen(
                 dropDownMenu = {
                     DropDownMenu(
                         expanded = expendedMenu,
-                        onSettingsClicked = onSettingsClicked
+                        onEditClicked = onEditClicked,
+                        onSettingsClicked = onSettingsClicked,
+                        onAboutOurApplicationClicked = onAboutOurApplicationClicked
                     )
                 }
             )

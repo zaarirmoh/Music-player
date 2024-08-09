@@ -44,7 +44,6 @@ fun TopAppBar(
     onFavoritesClicked: () -> String,
     dropDownMenu: @Composable () -> Unit = {},
 ){
-    var pageSelected: String by remember { mutableStateOf("Tracks") }
     Box(
         modifier = modifier
             .background(MaterialTheme.colorScheme.surfaceContainer)
@@ -54,88 +53,121 @@ fun TopAppBar(
             modifier = modifier
         ) {
             Spacer(modifier = modifier.height(65.dp))
-            Row(
-                modifier = modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Spacer(modifier = modifier.width(8.dp))
-                Text(
-                    text = "Music  Player",
-                    fontFamily = chopsicFontFamily,
-                    fontSize = 22.sp,
-                    modifier = modifier.padding(start = 15.dp)
-                )
-                Row(
-                    modifier = modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    dropDownMenu()
-                    IconButton(onClick = onSearchClicked) {
-                        Icon(
-                            imageVector = Icons.Rounded.Search,
-                            contentDescription = null,
-                        )
-                    }
-                    IconButton(onClick = onMenuClicked) {
-                        Icon(
-                            imageVector = Icons.Filled.MoreVert,
-                            contentDescription = null,
-                        )
-                    }
-                    Spacer(modifier = modifier.width(7.dp))
-                }
-            }
+            FirstTopAppBarRow(
+                onSearchClicked = onSearchClicked,
+                onMenuClicked = onMenuClicked,
+                dropDownMenu = dropDownMenu
+            )
             Spacer(modifier = modifier.height(40.dp))
-            Row(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(6.dp)
-                    .padding(bottom = 5.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                TextButton(onClick = { pageSelected = onTracksClicked() }) {
-                    Text(
-                        text = "Tracks",
-                        color = if(currentPage == 0) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
-                        fontWeight = if(currentPage == 0) FontWeight.Bold else null,
-                        fontSize = if(currentPage == 0) 19.sp else TextUnit.Unspecified
-                    )
-                }
-                TextButton(onClick = { pageSelected = onAlbumsClicked() }) {
-                    Text(
-                        text = "Albums",
-                        color = if(currentPage == 1) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
-                        fontWeight = if(currentPage == 1) FontWeight.Bold else null,
-                        fontSize = if(currentPage == 1) 19.sp else TextUnit.Unspecified
-                    )
-                }
-                TextButton(onClick = { pageSelected = onPlaylistsClicked() }) {
-                    Text(
-                        text = "Playlists",
-                        color = if(currentPage == 2) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
-                        fontWeight = if(currentPage == 2) FontWeight.Bold else null,
-                        fontSize = if(currentPage == 2) 19.sp else TextUnit.Unspecified
-                    )
-                }
-                TextButton(onClick = { pageSelected = onArtistsClicked() }) {
-                    Text(
-                        text = "Artists",
-                        color = if(currentPage == 3) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
-                        fontWeight = if(currentPage == 3) FontWeight.Bold else null,
-                        fontSize = if(currentPage == 3) 19.sp else TextUnit.Unspecified
-                    )
-                }
-                TextButton(onClick = { pageSelected = onFavoritesClicked() }) {
-                    Text(
-                        text = "Favorites",
-                        color = if(currentPage == 4) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
-                        fontWeight = if(currentPage == 4) FontWeight.Bold else null,
-                        fontSize = if(currentPage == 4) 19.sp else TextUnit.Unspecified,
-                        maxLines = 1
-                    )
-                }
+            SecondTopAppBarRow(
+                currentPage = currentPage,
+                onTracksClicked = onTracksClicked,
+                onAlbumsClicked = onAlbumsClicked,
+                onPlaylistsClicked = onPlaylistsClicked,
+                onArtistsClicked = onArtistsClicked,
+                onFavoritesClicked = onFavoritesClicked
+            )
+        }
+    }
+}
+@Composable
+fun FirstTopAppBarRow(
+    modifier: Modifier = Modifier,
+    onSearchClicked: () -> Unit,
+    onMenuClicked: () -> Unit,
+    dropDownMenu: @Composable () -> Unit
+){
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Spacer(modifier = modifier.width(8.dp))
+        Text(
+            text = "Music  Player",
+            fontFamily = chopsicFontFamily,
+            fontSize = 22.sp,
+            modifier = modifier.padding(start = 15.dp)
+        )
+        Row(
+            modifier = modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.End
+        ) {
+            dropDownMenu()
+            IconButton(onClick = onSearchClicked) {
+                Icon(
+                    imageVector = Icons.Rounded.Search,
+                    contentDescription = null,
+                )
             }
+            IconButton(onClick = onMenuClicked) {
+                Icon(
+                    imageVector = Icons.Filled.MoreVert,
+                    contentDescription = null,
+                )
+            }
+            Spacer(modifier = modifier.width(7.dp))
+        }
+    }
+}
+@Composable
+fun SecondTopAppBarRow(
+    modifier: Modifier = Modifier,
+    currentPage: Int,
+    onTracksClicked: () -> String,
+    onAlbumsClicked: () -> String,
+    onPlaylistsClicked: () -> String,
+    onArtistsClicked: () -> String,
+    onFavoritesClicked: () -> String
+){
+    var pageSelected: String by remember { mutableStateOf("Tracks") }
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(6.dp)
+            .padding(bottom = 5.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
+        TextButton(onClick = { pageSelected = onTracksClicked() }) {
+            Text(
+                text = "Tracks",
+                color = if(currentPage == 0) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
+                fontWeight = if(currentPage == 0) FontWeight.Bold else null,
+                fontSize = if(currentPage == 0) 19.sp else TextUnit.Unspecified
+            )
+        }
+        TextButton(onClick = { pageSelected = onAlbumsClicked() }) {
+            Text(
+                text = "Albums",
+                color = if(currentPage == 1) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
+                fontWeight = if(currentPage == 1) FontWeight.Bold else null,
+                fontSize = if(currentPage == 1) 19.sp else TextUnit.Unspecified
+            )
+        }
+        TextButton(onClick = { pageSelected = onPlaylistsClicked() }) {
+            Text(
+                text = "Playlists",
+                color = if(currentPage == 2) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
+                fontWeight = if(currentPage == 2) FontWeight.Bold else null,
+                fontSize = if(currentPage == 2) 19.sp else TextUnit.Unspecified
+            )
+        }
+        TextButton(onClick = { pageSelected = onArtistsClicked() }) {
+            Text(
+                text = "Artists",
+                color = if(currentPage == 3) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
+                fontWeight = if(currentPage == 3) FontWeight.Bold else null,
+                fontSize = if(currentPage == 3) 19.sp else TextUnit.Unspecified
+            )
+        }
+        TextButton(onClick = { pageSelected = onFavoritesClicked() }) {
+            Text(
+                text = "Favorites",
+                color = if(currentPage == 4) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
+                fontWeight = if(currentPage == 4) FontWeight.Bold else null,
+                fontSize = if(currentPage == 4) 19.sp else TextUnit.Unspecified,
+                maxLines = 1
+            )
         }
     }
 }
