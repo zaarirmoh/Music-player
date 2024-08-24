@@ -1,2 +1,10 @@
-# Music-player
-an android music player application using kotlin and jetpack compose
+# Music player
+
+an audio player android application to play your music and recorded audios
+
+
+## Technologies
+
+ - Kotlin
+ - Jetpack compose
+ - media3
