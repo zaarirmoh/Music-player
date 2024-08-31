@@ -31,43 +31,32 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.palette.graphics.Palette
 import com.example.musicplayer.audio.AudioFile
-import com.example.musicplayer.ui.theme.Shapes
+import com.example.musicplayer.ui.theme.AlbumArtShapes
 
 @Composable
 fun AudioController(
     modifier: Modifier = Modifier,
     audioFile: AudioFile,
     isPlaying: Boolean = false,
+    isShuffled: Boolean = false,
+    isRepeating: Boolean = false,
+    onAudioControllerClicked: () -> Unit = {},
+    onAlbumArtClicked: () -> Unit = {},
     onPreviousClicked: () -> Unit = {},
     onPlayPauseClicked: () -> Unit = {},
     onNextClicked: () -> Unit = {},
-    onShuffleClicked: () -> Unit = {}
+    onShuffleClicked: () -> Unit = {},
+    onRepeatClicked: () -> Unit = {}
 ){
     val artWorkPalette = audioFile.albumArt?.let { Palette.from(it).generate() }
-    val dominantArtWorkColor: Color =
-        artWorkPalette?.getDominantColor(MaterialTheme.colorScheme.secondaryContainer.toArgb())
-            ?.let { Color(it) } ?: MaterialTheme.colorScheme.secondaryContainer
-    val vibrantArtWorkColor: Color =
-        artWorkPalette?.getVibrantColor(MaterialTheme.colorScheme.secondaryContainer.toArgb())
-            ?.let { Color(it) } ?: MaterialTheme.colorScheme.secondaryContainer
-    val darkVibrantArtWorkColor: Color =
-        artWorkPalette?.getDarkVibrantColor(MaterialTheme.colorScheme.secondaryContainer.toArgb())
-            ?.let { Color(it) } ?: MaterialTheme.colorScheme.secondaryContainer
-    val lightVibrantArtWorkColor: Color =
-        artWorkPalette?.getLightVibrantColor(MaterialTheme.colorScheme.secondaryContainer.toArgb())
-            ?.let { Color(it) } ?: MaterialTheme.colorScheme.secondaryContainer
     val mutedArtWorkColor: Color =
         artWorkPalette?.getMutedColor(MaterialTheme.colorScheme.secondaryContainer.toArgb())
             ?.let { Color(it) } ?: MaterialTheme.colorScheme.secondaryContainer
-    val darkMutedArtWorkColor: Color =
-        artWorkPalette?.getDarkMutedColor(MaterialTheme.colorScheme.secondaryContainer.toArgb())
-            ?.let { Color(it) } ?: MaterialTheme.colorScheme.secondaryContainer
-    val lightMutedArtWorkColor: Color =
-        artWorkPalette?.getLightMutedColor(MaterialTheme.colorScheme.secondaryContainer.toArgb())
-            ?.let { Color(it) } ?: MaterialTheme.colorScheme.secondaryContainer
+
     Card(
-        shape = Shapes.medium,
+        shape = AlbumArtShapes.medium,
         colors = CardDefaults.cardColors(containerColor = mutedArtWorkColor),
+        onClick = onAudioControllerClicked,
         modifier = modifier
             .fillMaxWidth()
             .height(70.dp)
@@ -81,10 +70,11 @@ fun AudioController(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Spacer(modifier = modifier.width(12.dp))
-                AudioItemPhoto(
+                DisplayAlbumArt(
                     bitmap = audioFile.albumArt,
                     size = 45.dp,
-                    shape = Shapes.medium
+                    shape = AlbumArtShapes.medium,
+                    onAlbumArtClicked = onAlbumArtClicked
                 )
                 Spacer(modifier = modifier.width(15.dp))
                 Box(
@@ -113,7 +103,6 @@ fun AudioController(
                     )
                     Spacer(modifier = modifier.width(3.dp))
                 }
-
             }
         }
     }

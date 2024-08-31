@@ -35,12 +35,12 @@ fun NavGraphBuilder.homeNavigation(){
         val expandedMenu = remember { mutableStateOf(false) }
         audioViewModel.loadAudioFiles(context.contentResolver)
         HomeScreen(
-            pagerState = pagerState,
+            context = context,
             audioViewModel = audioViewModel,
             intent = intent,
-            context = context,
+            pagerState = pagerState,
             controllerFuture = controllerFuture,
-            expendedMenu = expandedMenu,
+            expandedMenu = expandedMenu,
             onMenuIconClicked = {
                 expandedMenu.value = true
             },

@@ -18,23 +18,27 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.example.musicplayer.ui.theme.Shapes
+import com.example.musicplayer.ui.theme.AlbumArtShapes
 
 @Composable
-fun AudioItemPhoto(
+fun DisplayAlbumArt(
     modifier: Modifier = Modifier,
     bitmap: Bitmap?,
     size: Dp = 52.dp,
-    shape: Shape = Shapes.extraSmall
+    shape: Shape = AlbumArtShapes.extraSmall,
+    onAlbumArtClicked: () -> Unit = {},
 ){
     Card(
-        onClick = { /*TODO*/ },
+        onClick = onAlbumArtClicked,
         modifier = modifier.size(size),
         shape = shape,
     ) {
         if (bitmap != null) {
+            val newWidth = calculateArtWorkWidth(bitmap,size)
+            val newHeight = calculateArtWorkHeight(bitmap,size)
+            val scaledBitmap = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true)
             Image(
-                bitmap = bitmap.asImageBitmap(),
+                bitmap = scaledBitmap.asImageBitmap(),
                 contentDescription = "Album Art",
                 contentScale = ContentScale.Crop,
                 modifier = modifier.fillMaxSize()
@@ -52,5 +56,21 @@ fun AudioItemPhoto(
             }
         }
 
+    }
+}
+fun calculateArtWorkWidth(bitmap: Bitmap,size: Dp): Int{
+    val aspectRatio = bitmap.width.toFloat() / bitmap.height.toFloat()
+    return if (bitmap.width > bitmap.height) {
+        size.value.toInt() + 50
+    } else {
+        (size.value.toInt() + 50 * aspectRatio).toInt()
+    }
+}
+fun calculateArtWorkHeight(bitmap: Bitmap,size: Dp): Int{
+    val aspectRatio = bitmap.width.toFloat() / bitmap.height.toFloat()
+    return if (bitmap.width > bitmap.height) {
+        (size.value.toInt() + 50 / aspectRatio).toInt()
+    } else {
+        size.value.toInt() + 50
     }
 }
