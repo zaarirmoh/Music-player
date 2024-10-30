@@ -10,8 +10,7 @@
 - 🔊 Volume control and media notifications
 
 ## Screenshots
-![Music player Home](link-to-home-screen-image)
-![Now Playing Screen](link-to-now-playing-image)
+![Music player Home](Screenshots.png)
 
 ### Tech Stack
 - **Kotlin** - Modern programming language for Android
